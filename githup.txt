@@ -1,0 +1,40 @@
+1.githup的注册
+2.githup创建工程
+3.git客户端的安装
+4.git的工作区域
+	工作区		缓存区		gitRepository(仓库)
+	git add **	git commit -m 'des'	git push origin master
+5.git初始化以及仓库创建
+	1.设置用户名
+	git config --global user.name 'zy15001016536'
+	2.设置邮箱
+	git config --global user.email '15001016536@163.com'
+6.修改 git配置文件解决无法提交的问题
+答案：私有项目，没有权限，输入用户名密码，或者远程地址采用这种类型：
+
+vi .git/config
+
+# 将
+[remote "origin"]
+    url = https://github.com/用户名/仓库名.git
+修改为：
+[remote "origin"]
+    url = https://用户名:密码@github.com/用户名/仓库名.git
+7.git的远程管理
+	git clone https://githup.com/zy150010016536/zy.git
+8.本地仓库的更新
+	git pull origin master
+9.缓冲区的提交
+	git add .
+10.提交到仓库
+	git commit -m '描述'
+11.提交到git
+	git push origin master
+12.删除githup文件/文件夹
+	git pull oring master //更新
+	cd target
+	dir
+	git rm -r --cache target
+	git commit -m '提交操作'
+	git push origin master //githup进行跟新
+

@@ -32,6 +32,37 @@ class Promise{
 			reject(this.fail)
 		}
 	}
+	//all
+	static all(params){
+		//判断是否为数组
+		if(Array.isArray(params)){
+			let resultArr = [];
+			for(let item in params){
+				//判断是否为Promise实例
+				let _promise = params[item];
+
+				if(_promise instanceof Promise){
+					if(_promise.status=='resolve'){
+						resultArr.push(_promise.success);
+					}else if(_promise.status=='reject'){
+						return new Promise((resolve,reject)=>{
+						reject(_promise.fail)
+						})
+					}
+
+				}else{
+					return console.log('promise is not instanceof Promise!')
+				}
+			}
+			if(resultArr.length==params.length){
+				return new Promise((resolve,reject)=>{
+					resolve(resultArr);
+				});
+			}
+		}else{
+			console.log('the prams is not Array!')
+		}
+	}
 
 
 }

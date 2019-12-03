@@ -1,0 +1,42 @@
+window下hph开发环境的配置
+1、cd /path
+mkdir apache;
+mkdir mysql;
+mkdir php
+2、将各个压缩文件解压到响应的目录
+3、配置apache访问目录
+
+vi /apache/conf/httpd.conf
+Define SRVROOT "D:/tools/wamp/Apache24"//安装目录
+#D:/tools/wamp/Apache24/conf/httpd.conf
+#ServerRoot "${SRVROOT}"
+ServerRoot "D:/tools/wamp/Apache24"//安装目录
+
+4.php集成apache
+LoadModule php7_module "D:/tools/wamp/php/php7apache2_4.dll"
+PHPIniDir "D:/tools/wamp/php/"
+AddType application/x-httpd-php .php
+AddType application/x-httpd-php .html
+AddType application/pdf .pdf
+
+5、配置apache静态资源服务器
+	添加静态资源的访问路径
+	<IfModule alias_module>
+		ScriptAlias /cgi-bin/ "${SRVROOT}/cgi-bin/"
+    		Alias /files D:/tools  //静态资源的访问路径
+	</IfModule>
+
+	
+	开放权限
+	//原始
+	#<Directory />
+	#    AllowOverride none
+	#    Require all denied
+	#</Directory>
+	//修改替换
+	<Directory />
+        Options Indexes FollowSymlinks
+        AllowOverride All
+        Require all granted
+	</Directory>
+

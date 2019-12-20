@@ -13,7 +13,7 @@ console.log("outer:"+this);//Window
 var name = "outer";
 var age = 18;
 var o = {
-	name:"inner";
+	name:"inner",
 	show:function(){
 		console.log(this.name)//inner
 		console.log(this.age)//undefined
@@ -25,7 +25,7 @@ o.show()//window.o.show()
 //example3
 var name = 'outer';
 var o = {
-	name:'inner';
+	name:'inner',
 	show:function(){
 		console.log(name);//outer
 	}
@@ -78,10 +78,10 @@ o.fn2()//this.fn1 is not a function  this->window
 //箭头函数 this始终指向函数定义是的this,而非执行时。箭头函数中没有this绑定，需要查找作用域链来看this的指向如果箭头函数被非箭头函数包裹，则指向最近非箭头函数的this
 var name = 'outer';
 var o = {
-        name:'inner';
+        name:'inner',
         fn1:function(){
                 console.log(this.name)
-        }
+        },
         fn2:function(){
                 setTimeiout(()=>{//箭头函数的指向为fn2的调用者
                         this.fn1();
@@ -95,10 +95,10 @@ o.fn2()//inner
 //保存this的指向 _this = this;
 var name = 'outer';
 var o = {
-        name:'inner';
+        name:'inner',
         fn1:function(){
                 console.log(this.name)
-        }
+        },
         fn2:function(){
 		var _this = this;//_this 保存为对象o
                 setTimeiout(function(){
@@ -112,10 +112,10 @@ o.fn2()//inner
 //apply
 var name = 'outer';
 var o = {
-        name:'inner';
+        name:'inner',
         fn1:function(){
                 console.log(this.name)
-        }
+        },
         fn2:function(){
                 var _this = this;//_this 保存为对象o
                 setTimeiout(function(){
@@ -130,10 +130,10 @@ o.fn2()//inner
 //call
 var name = 'outer';
 var o = {
-        name:'inner';
+        name:'inner',
         fn1:function(){
                 console.log(this.name)
-        }
+        },
         fn2:function(){
                 var _this = this;//_this 保存为对象o
                 setTimeiout(function(){
@@ -148,10 +148,10 @@ o.fn2()//inner
 //bind
 var name = 'outer';
 var o = {
-        name:'inner';
+        name:'inner',
         fn1:function(){
                 console.log(this.name)
-        }
+        },
         fn2:function(){
                 var _this = this;//_this 保存为对象o
                 setTimeiout(function(){

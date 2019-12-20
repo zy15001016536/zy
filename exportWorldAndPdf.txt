@@ -1,0 +1,105 @@
+1、需要引入的插件
+<script src="javascripts/FileSaver.js" type="text/javascript"></script>
+<script src="javascripts/html2canvas.min.js" type="text/javascript"></script>
+<script src="javascripts/html-docx.js" type="text/javascript"></script>
+<script src="javascripts/jspdf.min.js"></script>
+
+2、world
+
+function nodeToString ( node ) {
+        var tmpNode = document.createElement( "div" );
+        tmpNode.appendChild( node.cloneNode( true ) );
+        var str = tmpNode.innerHTML;
+        tmpNode = node = null; // prevent memory leaks in IE
+        return str;
+}
+
+
+function switchImage(id){
+        return new Promise(function(resolve,reject){
+                var doc = document.getElementById(id);
+                html2canvas(doc,{
+                        backgroundColor: null
+                        }).then((canvas) => {
+                                if(canvas){
+                                        let dataURL = canvas.toDataURL("image/png");
+                                        var img=document.createElement("img");
+                                        var div=document.createElement("div");
+                                        div.style.marginTop="20px";
+                                        div.style.marginRight= "auto";
+                                        div.style.marginBottom="20px";
+                                        div.style.marginLeft="auto";
+                                        div.style.textAlign= "center";
+                                        img.src=dataURL;
+                                        div.appendChild(img);
+                                        //document.body.appendChild(div);
+                                        resolve(nodeToString(div))
+                                }
+                });
+        });
+
+}
+
+function initTable(){
+        var table = $("#report_table").clone();
+        table.removeAttr('class');
+        table.attr('border',1);
+        table.css({width:'900px'});
+        var title = "<p style='font-size:14px;color: #007aff;'>ids统计报表</p>";
+        return title+table[0].outerHTML;
+
+}
+
+function downloadWorld(){
+        var content = '<!DOCTYPE html ><head><meta charset="UTF-8">';
+
+        var tableHtml = initTable();
+        var chartsId = ["ids-bar","ids-pie"];
+        content +=tableHtml;
+        var p1 = switchImage(chartsId[0]);
+        var p2 = switchImage(chartsId[1]);
+        Promise.all([p1,p2]).then(function(values){
+                content += values[0]+values[1];
+                var converted = htmlDocx.asBlob(content,{orientation:"landscape",width: '30%'});
+                saveAs(converted, '入侵系统检测报告.docx');
+        });
+
+}
+
+
+
+3、exportPdf
+
+function downloadPdf(id){
+        html2canvas(document.querySelector(id), {
+                allowTaint: true
+                }).then(function (canvas) {
+
+                let contentWidth = canvas.width
+                let contentHeight = canvas.height
+                let pageHeight = contentWidth / 592.28 * 841.89
+                let leftHeight = contentHeight
+                let position = 0
+                let imgWidth = 595.28
+                let imgHeight = 592.28 / contentWidth * contentHeight
+                let pageData = canvas.toDataURL('image/jpeg', 1.0)
+                let PDF = new jsPDF('', 'pt', 'a4');
+                if (leftHeight < pageHeight) {
+                        PDF.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight*1.5)
+                } else {
+                        while (leftHeight > 0) {
+                        PDF.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight*1.5)
+                        leftHeight -= pageHeight
+                        position -= 841.89
+                        if (leftHeight > 0) {
+                                PDF.addPage()
+                        }
+                        }
+                }
+                PDF.save('入侵系统检测报告.pdf')
+                }
+        )
+}
+
+
+

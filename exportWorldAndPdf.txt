@@ -100,6 +100,16 @@ function downloadPdf(id){
                 }
         )
 }
+//这里需要注意浏览器兼容问题 在ie下不兼容promise语法
+解决方法如下
+1、引入bluebird.js
+2、引入script的type类型设为text/babel
+3、引入brower.min.js
+4、引入polyfill.min.js
 
-
-
+<script type="text/javascript" src ="javascripts/polyfill.min.js"></script>
+<script src="javascripts/browser.min.js"></script>
+<!--[if IE]>
+	<script src="javascripts/bluebird.js"></script>
+<![endif]-->
+<script src="javascripts/ids_report.js" type="text/babel"></script>
